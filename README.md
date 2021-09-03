@@ -5,6 +5,6 @@ This is an ETL pipeline to pull daily vaccinations data from [Our World in Data 
 
 
 ## Architecture
-
+![arch](https://github.com/julingc/vaccinations-monitor/blob/main/image/Architecture_diagram.png)
 
 
