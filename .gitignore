@@ -39,11 +39,9 @@ Thumbs.db
 # streamlit secrets
 .streamlit/secrets.toml
 
-# keys
-/keys/vaccination-monitor.json
 
-
-# airflow cfg and logs
+# airflow
 airflow.cfg
 webserver_config.py
 /logs
+/keys
