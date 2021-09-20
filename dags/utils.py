@@ -14,6 +14,7 @@ table_id = "vaccination-monitor.vaccinations.daily-vaccinations"
 def get_vaccination_data(url: str, filename: str):
     df = pd.read_csv(url)
     df = df[["location", "date", "daily_vaccinations_per_million"]]
+    df = df.dropna()
     df["date"] = pd.to_datetime(df["date"])
 
     # Extract necessary data and output a csv for loading to BigQuery

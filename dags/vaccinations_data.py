@@ -4,8 +4,13 @@ from airflow import DAG
 from airflow.operators.dummy import DummyOperator
 from airflow.operators.python import BranchPythonOperator, PythonOperator
 
-from utils import (check_bq_rows, compare, get_vaccination_data,
-                   load_data_to_bq, remove_local)
+from utils import (
+    check_bq_rows,
+    compare,
+    get_vaccination_data,
+    load_data_to_bq,
+    remove_local,
+)
 
 # DAG definition
 default_args = {

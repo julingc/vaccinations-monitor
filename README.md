@@ -4,7 +4,7 @@
 
 This is an ETL pipeline to pull daily vaccinations data from [Our World in Data ](https://github.com/owid/covid-19-data/tree/master/public/data/vaccinations) and load it into the data warehouse (Google BigQuery). This project aims to show the vaccination progress per country/region. 
 
-Check out the [dashboard](https://share.streamlit.io/julingc/vaccinations-monitor/main/vaccinations_app.py) that is built using daily vaccinations data. 
+Check out the [dashboard](https://share.streamlit.io/julingc/vaccinations-monitor/main/vaccinations_app.py) which is built using daily vaccinations data. 
 
 
 ## Architecture
@@ -13,6 +13,12 @@ Check out the [dashboard](https://share.streamlit.io/julingc/vaccinations-monito
 This project uses Airflow to schedule the ETL workflow to run every 24 hours.
 
 ## DAG View
+
+1. Pull vaccinations data from [Our World in Data ](https://github.com/owid/covid-19-data/tree/master/public/data/vaccinations) and save it as a local csv file. This function also pushes the number of rows in vaccinations data into an XCom.
+2. Get the number of rows in the Google BigQuery warehouse.
+3. Compare the number of rows in [Our World in Data ](https://github.com/owid/covid-19-data/tree/master/public/data/vaccinations) and Google BigQuery warehouse to 
+   * Delete the local csv file if there is no new data needs to load into the data warehouse or
+   * Load data into the datawarehouse and delete the local csv file
 
 ![dag](https://github.com/julingc/vaccinations-monitor/blob/main/image/DAG_Graph.png)
 
