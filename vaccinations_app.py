@@ -16,7 +16,7 @@ client = bigquery.Client(credentials=credentials)
 def load_data(locations, start_date, end_date):
     query = f"""
             SELECT location, date, daily_vaccinations_per_million
-            FROM `vaccination-monitor.vaccinations.daily-vaccinations`
+            FROM `vaccination-monitor-339110.vaccinations.daily-vaccinations`
             WHERE date BETWEEN DATE("{start_date}") AND DATE("{end_date}")
             AND location IN UNNEST(@selected_countries);
             """
@@ -31,7 +31,7 @@ def load_data(locations, start_date, end_date):
 # Retrieve all countries/regions
 country_query = """
                 SELECT DISTINCT location
-                FROM `vaccination-monitor.vaccinations.daily-vaccinations`
+                FROM `vaccination-monitor-339110.vaccinations.daily-vaccinations`
                 """
 countries_df = client.query(country_query).result().to_dataframe()
 countries = list(countries_df.location)
