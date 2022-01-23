@@ -8,7 +8,7 @@ from google.cloud import bigquery
 BQ_CONN_ID = "bigquery_connection"
 BQ_PROJECT = "vaccination-monitor"
 BQ_DATASET = "vaccinations"
-table_id = "vaccination-monitor.vaccinations.daily-vaccinations"
+table_id = "vaccination-monitor-339110.vaccinations.daily-vaccinations"
 
 
 def get_vaccination_data(url: str, filename: str):
@@ -34,7 +34,8 @@ def check_bq_rows():
 
 
 def compare(**context):
-    csv_rows = context["task_instance"].xcom_pull(task_ids="extract_vaccination_data")
+    csv_rows = context["task_instance"].xcom_pull(
+        task_ids="extract_vaccination_data")
     bq_rows = context["task_instance"].xcom_pull(task_ids="get_bq_rows")
 
     if csv_rows == bq_rows:
@@ -55,7 +56,8 @@ def load_data_to_bq(filename: str, remove_local=False):
     # Overwrite table data with the lastest vaccinations.csv
     job_config = bigquery.job.LoadJobConfig(
         schema=[
-            bigquery.SchemaField("location", bigquery.enums.SqlTypeNames.STRING),
+            bigquery.SchemaField(
+                "location", bigquery.enums.SqlTypeNames.STRING),
             bigquery.SchemaField("date", bigquery.enums.SqlTypeNames.DATE),
             bigquery.SchemaField(
                 "daily_vaccinations_per_million", bigquery.enums.SqlTypeNames.INTEGER

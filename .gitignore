@@ -47,5 +47,6 @@ __pycache__/
 # airflow
 airflow.cfg
 webserver_config.py
+airflow-webserver.pid
 /logs
 /keys

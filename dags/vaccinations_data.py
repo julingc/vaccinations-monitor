@@ -23,12 +23,9 @@ default_args = {
     "retry_delay": timedelta(minutes=1),
 }
 
-dag = DAG("etl_workflow", default_args=default_args, schedule_interval="@daily")
+dag = DAG(dag_id="etl_workflow", default_args=default_args,
+          schedule_interval="@daily")
 
-# Config variables
-BQ_CONN_ID = "bigquery_connection"
-BQ_PROJECT = "vaccination-monitor"
-BQ_DATASET = "vaccinations"
 
 extract_vaccination_data = PythonOperator(
     dag=dag,
