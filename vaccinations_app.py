@@ -36,7 +36,7 @@ def load_data(locations, start_date, end_date):
     """
     data = pd.read_csv(DATA_URL)
     data['date'] = pd.to_datetime(data['date'])
-    return data[data['location'] == locations & data['date'] > start_date & data['date'] < end_date]
+    return data[(data['location'] == locations) & (data['date'] > start_date) & (data['date'] < end_date)]
 
 
 """
@@ -49,13 +49,10 @@ countries_df = client.query(country_query).result().to_dataframe()
 countries = list(countries_df.location)
 """
 
-
 countries = pd.read_csv(DATA_URL)['location']
 
 # Title & sidebar widgets
 st.title("How fast are countries vaccinating?")
-data_load_state = st.text('Loading data...')
-data_load_state.text("Done!")
 
 st.sidebar.header("Parameter setting")
 selected_countries = st.sidebar.multiselect(
