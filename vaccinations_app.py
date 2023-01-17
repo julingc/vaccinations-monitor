@@ -2,6 +2,8 @@ import datetime as dt
 
 import plotly.graph_objects as go
 import streamlit as st
+import pandas as pd
+import numpy as np
 from google.cloud import bigquery
 from google.oauth2 import service_account
 
@@ -11,33 +13,50 @@ credentials = service_account.Credentials.from_service_account_info(
 )
 client = bigquery.Client(credentials=credentials)
 
+DATA_URL = 'https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/vaccinations/vaccinations.csv'
+
 
 @st.cache()
 def load_data(locations, start_date, end_date):
-    query = f"""
+    # Data Fetch from Google Big Query
+    # Due to the unavailability of author's GCP, the script has been replaced and commented out as below
+    """
+    query = f"
             SELECT location, date, daily_vaccinations_per_million
             FROM `vaccination-monitor-339110.vaccinations.daily-vaccinations`
             WHERE date BETWEEN DATE("{start_date}") AND DATE("{end_date}")
             AND location IN UNNEST(@selected_countries);
-            """
+            "
     job_config = bigquery.QueryJobConfig(
         query_parameters=[
             bigquery.ArrayQueryParameter("selected_countries", "STRING", locations),
         ]
     )
     return client.query(query, job_config=job_config).result().to_dataframe()
+    """
+    data = pd.read_csv(DATA_URL)
+    data['date'] = pd.to_datetime(data['date'])
+    return data[data['location'] == locations & data['date'] > start_date & data['date'] < end_date]
 
 
+"""
 # Retrieve all countries/regions
-country_query = """
+country_query = "
                 SELECT DISTINCT location
                 FROM `vaccination-monitor-339110.vaccinations.daily-vaccinations`
-                """
+                "
 countries_df = client.query(country_query).result().to_dataframe()
 countries = list(countries_df.location)
+"""
+
+
+countries = pd.read_csv(DATA_URL)['location']
 
 # Title & sidebar widgets
 st.title("How fast are countries vaccinating?")
+data_load_state = st.text('Loading data...')
+data_load_state.text("Done!")
+
 st.sidebar.header("Parameter setting")
 selected_countries = st.sidebar.multiselect(
     "Select countries/regions", countries, default=["World"]
