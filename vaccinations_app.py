@@ -16,7 +16,7 @@ client = bigquery.Client(credentials=credentials)
 DATA_URL = 'https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/vaccinations/vaccinations.csv'
 
 
-@st.cache(suppress_st_warning=True)
+@st.cache
 def load_data(locations, start_date, end_date):
     # Data Fetch from Google Big Query
     # Due to the unavailability of author's GCP, the script has been replaced and commented out as below
@@ -29,14 +29,15 @@ def load_data(locations, start_date, end_date):
             "
     job_config = bigquery.QueryJobConfig(
         query_parameters=[
-            bigquery.ArrayQueryParameter("selected_countries", "STRING", locations),
+            bigquery.ArrayQueryParameter(
+                "selected_countries", "STRING", locations),
         ]
     )
     return client.query(query, job_config=job_config).result().to_dataframe()
     """
     data = pd.read_csv(DATA_URL)
     data['date'] = pd.to_datetime(data['date'])
-    return data[(data['location'] == locations) & (data['date'] > start_date) & (data['date'] < end_date)]
+    return data[(data['location'].isin(locations)) & (data['date'] > start_date) & (data['date'] < end_date)]
 
 
 """
@@ -49,7 +50,7 @@ countries_df = client.query(country_query).result().to_dataframe()
 countries = list(countries_df.location)
 """
 
-countries = pd.read_csv(DATA_URL)['location']
+countries = pd.read_csv(DATA_URL)['location'].unique()
 
 # Title & sidebar widgets
 st.title("How fast are countries vaccinating?")
@@ -97,7 +98,7 @@ st.write(
 )
 st.write(
     """
-    You can check out the implementation in this 
+    You can check out the implementation in this
     [repo](https://github.com/julingc/vaccinations-monitor).
     """
 )
