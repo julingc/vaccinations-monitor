@@ -16,7 +16,7 @@ client = bigquery.Client(credentials=credentials)
 DATA_URL = 'https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/vaccinations/vaccinations.csv'
 
 
-@st.cache()
+@st.cache(suppress_st_warning=True)
 def load_data(locations, start_date, end_date):
     # Data Fetch from Google Big Query
     # Due to the unavailability of author's GCP, the script has been replaced and commented out as below
