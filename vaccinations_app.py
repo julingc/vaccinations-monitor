@@ -37,7 +37,7 @@ def load_data(locations, start_date, end_date):
     """
     data = pd.read_csv(DATA_URL)
     data['date'] = pd.to_datetime(data['date'])
-    return data[(data['location'].isin(locations)) & (data['date'] > start_date) & (data['date'] < end_date)]
+    return data[(data['location'].isin(locations)) & (data['date'] > dt.date(start_date)) & (data['date'] < dt.date(end_date))]
 
 
 """
