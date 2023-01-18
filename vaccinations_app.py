@@ -36,8 +36,8 @@ def load_data(locations, start_date, end_date):
     return client.query(query, job_config=job_config).result().to_dataframe()
     """
     data = pd.read_csv(DATA_URL)
-    data['date'] = pd.to_datetime(data['date'])
-    return data[(data['location'].isin(locations)) & (data['date'] > dt.date(start_date)) & (data['date'] < dt.date(end_date))]
+    data['date'] = pd.to_datetime(data['date']).dt.date
+    return data[(data['location'].isin(locations)) & (data['date'] > start_date) & (data['date'] < end_date)]
 
 
 """
