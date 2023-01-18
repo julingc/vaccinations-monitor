@@ -40,16 +40,6 @@ def load_data(locations, start_date, end_date):
     return data[(data['location'].isin(locations)) & (data['date'] > start_date) & (data['date'] < end_date)]
 
 
-"""
-# Retrieve all countries/regions
-country_query = "
-                SELECT DISTINCT location
-                FROM `vaccination-monitor-339110.vaccinations.daily-vaccinations`
-                "
-countries_df = client.query(country_query).result().to_dataframe()
-countries = list(countries_df.location)
-"""
-
 countries = pd.read_csv(DATA_URL)['location'].unique()
 
 # Title & sidebar widgets
